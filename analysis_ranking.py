@@ -5,25 +5,26 @@ import datasource.fxcm_ratesxml as src_fxcm
 import analysis_ranking_defs as defs
 
 # Parameters
-FORWARD, RECORDS = defs.parse_argv( sys.argv )
+const = defs.Const( sys.argv )
 
 # Fetch Latest Price by fxcm_rates
 # Fetch CurrencyRates by python_forex
 daily_prices = (
-            src_fxcm.Fetch_DailyPrices( defs.CURRENCY ) +
-            src_forex.Fetch_DailyPrices( defs.CURRENCY, RECORDS+FORWARD-1 ) )
+            src_fxcm.Fetch_DailyPrices( const.CURRENCY ) +
+            src_forex.Fetch_DailyPrices( const.CURRENCY,
+                                         const.RECORDS + const.FORWARD -1 ) )
 
 # Allocate list of dict: forex_ln_diff
-forex_ln_diff = defs.build_forex_ln_diff( daily_prices, FORWARD, RECORDS )
+forex_ln_diff = defs.build_forex_ln_diff( daily_prices, const )
 
 # Init rank_sum & rank_diff_min
-rank_sum, rank_diff_min = defs.init_rank_info()
+rank_sum, rank_diff_min = defs.init_rank_info( const.CURRENCY )
 
 # Output Daily Records
 print( '\n*** {} Day(s) Forwarding, {} Record(s) ***'
-        .format(FORWARD, RECORDS) )
+        .format(const.FORWARD, const.RECORDS) )
 
-for day in range(RECORDS):
+for day in range(const.RECORDS):
     sorted_symbol = sorted( forex_ln_diff[day], key=forex_ln_diff[day].get )
     if day == 0:
         print( '{:^10}'.format(daily_prices[day].timestamp), sorted_symbol )
@@ -31,7 +32,8 @@ for day in range(RECORDS):
         print( daily_prices[day].timestamp, sorted_symbol )
 
     # update rank_sum & rank_diff_min
-    defs.update_rank_info( rank_sum, rank_diff_min, sorted_symbol )
+    defs.update_rank_info( rank_sum, rank_diff_min,
+                           sorted_symbol, const.CURRENCY )
 
 # Output Rank Scoring
 print( '\n*** Ranking ***\n', sorted(rank_sum, key=rank_sum.get) )
