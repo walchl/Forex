@@ -32,8 +32,7 @@ for day in range(const.RECORDS):
         print( daily_prices[day].timestamp, sorted_symbol )
 
     # update rank_sum & rank_diff_min
-    defs.update_rank_info( rank_sum, rank_diff_min,
-                           sorted_symbol, const.CURRENCY )
+    defs.update_rank_info( rank_sum, rank_diff_min, sorted_symbol )
 
 # Output Rank Scoring
 print( '\n*** Ranking ***\n', sorted(rank_sum, key=rank_sum.get) )

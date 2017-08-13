@@ -55,7 +55,7 @@ def init_rank_info( CURRENCY ):
     return rank_sum, rank_diff_min
 
 # Update rank_sum & rank_diff_min by sorted_symbol
-def update_rank_info( rank_sum, rank_diff_min, sorted_symbol, CURRENCY ):
+def update_rank_info( rank_sum, rank_diff_min, sorted_symbol ):
     # Calculate rank_sum
     rank = {}
     rank_symbol = 0
@@ -65,7 +65,7 @@ def update_rank_info( rank_sum, rank_diff_min, sorted_symbol, CURRENCY ):
         rank_symbol += 1
 
     # Update rank_diff_min
-    for i in CURRENCY:
-        for j in CURRENCY:
+    for i in sorted_symbol:
+        for j in sorted_symbol:
             if i != j:
                 rank_diff_min[i+j] = min( rank_diff_min[i+j], rank[j]-rank[i] )
