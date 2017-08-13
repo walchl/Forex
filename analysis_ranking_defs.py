@@ -26,7 +26,7 @@ def build_forex_ln_diff( daily_prices, const ):
         forex_ln_diff.append( {} )
 
     # Calculate ln_diff for each symbol
-    for symbol_i in range(len(const.CURRENCY)):
+    for symbol_i, symbol in enumerate(const.CURRENCY):
         # Calculate ln for each day
         forex_ln = []
         for day in range(const.RECORDS+const.FORWARD):
@@ -34,7 +34,7 @@ def build_forex_ln_diff( daily_prices, const ):
 
         # Calculate diff between [day] and [day+FORWARD]
         for day in range(const.RECORDS):
-            forex_ln_diff[day][const.CURRENCY[symbol_i]] = (
+            forex_ln_diff[day][symbol] = (
                 forex_ln[day] - forex_ln[day+const.FORWARD])
 
     return forex_ln_diff

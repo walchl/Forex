@@ -16,8 +16,7 @@ def Fetch_DailyPrices( CURRENCY ):
     price_list = []
     PIVOT = CURRENCY[0]
 
-    for symbol_i in range(len(CURRENCY)):
-        symbol = CURRENCY[symbol_i]
+    for symbol in CURRENCY:
         if symbol == 'CNY':
             symbol = 'CNH'
 

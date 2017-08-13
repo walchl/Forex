@@ -42,15 +42,7 @@ print( '\n*** Stable Pairs ***' )
 last_diff = float('inf')
 printed_pairs = 0
 while printed_pairs < 5:
-    max_diff = float('-inf')
-
-    for key, diff in rank_diff_min.items():
-        # Skip large diff
-        if last_diff <= diff:
-            continue
-        # Update max
-        max_diff = max( max_diff, diff )
-
+    max_diff = max( v for v in rank_diff_min.values() if v<last_diff )
     last_diff = max_diff
 
     for key, diff in rank_diff_min.items():
