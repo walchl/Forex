@@ -1,6 +1,6 @@
 import sys
 
-import datasource.forex_python as src_forex
+import datasource.ecb_eurofxref_hist as src_ecb
 import datasource.fxcm_ratesxml as src_fxcm
 import analysis_ranking_defs as defs
 
@@ -11,7 +11,7 @@ const = defs.Const( sys.argv )
 # Fetch CurrencyRates by python_forex
 daily_prices = (
             src_fxcm.Fetch_DailyPrices( const.CURRENCY ) +
-            src_forex.Fetch_DailyPrices( const.CURRENCY,
+            src_ecb.Fetch_DailyPrices( const.CURRENCY,
                                          const.RECORDS + const.FORWARD -1 ) )
 
 # Allocate list of dict: forex_ln_diff
