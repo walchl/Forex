@@ -20,7 +20,7 @@ def Fetch_DailyPrices( CURRENCY, DAYS ):
 
         # Skip Identical
         if len(daily_prices)>0 and cr_pivot_last==cr_pivot_current:
-            daily_prices[-1].timestamp = datetime_current.date()
+            daily_prices[-1].label = datetime_current.date()
             continue
 
         # Init Price List
@@ -34,6 +34,6 @@ def Fetch_DailyPrices( CURRENCY, DAYS ):
 
         # Append data & price_list
         daily_prices.append( DailyPrices(datetime_current.date(), price_list) )
-        print( '{} Fetched'.format(daily_prices[-1].timestamp) )
+        print( '{} Fetched'.format(daily_prices[-1].label) )
 
     return daily_prices

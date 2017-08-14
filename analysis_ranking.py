@@ -27,25 +27,39 @@ print( '\n*** {} Day(s) Forwarding, {} Record(s) ***'
 for day in range(const.RECORDS):
     sorted_symbol = sorted( forex_ln_diff[day], key=forex_ln_diff[day].get )
     if day == 0:
-        print( '{:^10}'.format(daily_prices[day].timestamp), sorted_symbol )
+        print( '{:^10}'.format(daily_prices[day].label), sorted_symbol )
     else:
-        print( daily_prices[day].timestamp, sorted_symbol )
+        print( daily_prices[day].label, sorted_symbol )
 
     # update rank_sum & rank_diff_min
     defs.update_rank_info( rank_sum, rank_diff_min, sorted_symbol )
 
 # Output Rank Scoring
-print( '\n*** Ranking ***\n', sorted(rank_sum, key=rank_sum.get) )
+ranking = []
+last = -float('inf')
+while True:
+    larger = [ sum for sum in rank_sum.values() if sum > last ]
+    if len(larger) <= 0:
+        break
+
+    last = min( larger )
+    stage = [ symbol for symbol, sum in rank_sum.items() if sum==last ]
+    if len(stage) == 1:
+        ranking += stage
+    else:
+        ranking += [sorted(stage)]
+
+print( '\n*** Ranking ***\n', ranking )
 
 # Output The Most Stable Pairs
 print( '\n*** Stable Pairs ***' )
 last_diff = float('inf')
 printed_pairs = 0
 while printed_pairs < 5:
-    max_diff = max( v for v in rank_diff_min.values() if v<last_diff )
-    last_diff = max_diff
+    last_diff = max( v for v in rank_diff_min.values() if v<last_diff )
 
-    for key, diff in rank_diff_min.items():
-        if max_diff == diff:
-            print( key, max_diff )
-            printed_pairs += 1
+    stage = [ k for k,v in rank_diff_min.items() if v==last_diff ]
+    for k in sorted( stage ):
+        print( '{} {}'.format(k,last_diff) )
+
+    printed_pairs += len(stage)
