@@ -1,10 +1,20 @@
+import requests
 from lxml import etree
 
 from datasource.types import *
 
 def Fetch_DailyPrices( CURRENCY ):
     URL = 'http://rates.fxcm.com/RatesXML3'
-    table = etree.parse( URL ).getroot()
+    XMLText = ''
+
+    while True:
+        try:
+            XMLText = requests.get( URL, timeout=1.0 ).text
+            break
+        except:
+            print( 'Retry:', URL )
+
+    table = etree.fromstring( XMLText.encode('utf-8') )
 
     # Fetch All Prices
     price = {}

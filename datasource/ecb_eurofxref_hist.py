@@ -4,8 +4,17 @@ from lxml import etree
 from datasource.types import *
 
 def Fetch_DailyPrices( CURRENCY, DAYS ):
-    URL = str('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml')
-    table = etree.fromstring( requests.get( URL ).text.encode('utf-8') )[2]
+    URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml'
+    XMLText = ''
+
+    while True:
+        try:
+            XMLText = requests.get( URL, timeout=1.0 ).text
+            break
+        except:
+            print( 'Retry:', URL )
+
+    table = etree.fromstring( XMLText.encode('utf-8') )[2]
 
     # Init Return Values
     daily_prices = []
